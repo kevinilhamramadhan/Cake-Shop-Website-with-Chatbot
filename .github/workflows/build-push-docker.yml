@@ -2,9 +2,9 @@ name: Build & Push Docker Image
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ main, develop ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ main ]
 
 env:
   DOCKER_IMAGE_BACKEND: ${{ secrets.DOCKERHUB_USERNAME }}/Cake-Shop-backend
