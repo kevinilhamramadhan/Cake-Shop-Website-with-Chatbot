@@ -18,7 +18,7 @@ services:
       retries: 5
 
   migrate:
-    image: ${DOCKERHUB_USERNAME}/cake-shop-backend:latest
+    image: kevinilhamramadhan/cake-shop-backend:latest
     container_name: migrate-db
     restart: no
     networks:
@@ -28,7 +28,7 @@ services:
         condition: service_healthy
 
   backend:
-    image: ${DOCKERHUB_USERNAME}/cake-shop-backend:latest
+    image: kevinilhamramadhan/cake-shop-backend:latest
     container_name: cakeshop-backend
     restart: unless-stopped
     environment:
@@ -46,7 +46,7 @@ services:
         condition: service_healthy
 
   chatbot:
-    image: ${DOCKERHUB_USERNAME}/cake-shop-chatbot:latest
+    image: kevinilhamramadhan/cake-shop-chatbot:latest
     container_name: cakeshop-chatbot
     restart: unless-stopped
     environment:
@@ -57,7 +57,7 @@ services:
       - internal
 
   frontend:
-    image: ${DOCKERHUB_USERNAME}/cake-shop-frontend:latest
+    image: kevinilhamramadhan/cake-shop-frontend:latest
     container_name: cakeshop-frontend
     restart: unless-stopped
     networks:
