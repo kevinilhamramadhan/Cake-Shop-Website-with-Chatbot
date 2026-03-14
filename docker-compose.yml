@@ -1,1 +1,86 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: cakeshop-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - internal
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
+  migrate:
+    image: ${DOCKERHUB_USERNAME}/cake-shop-backend:latest
+    container_name: migrate-db
+    restart: no
+    networks:
+      - internal
+    depends_on:
+      db:
+        condition: service_healthy
+
+  backend:
+    image: ${DOCKERHUB_USERNAME}/cake-shop-backend:latest
+    container_name: cakeshop-backend
+    restart: unless-stopped
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      NODE_ENV: production
+    networks:
+      - internal
+    depends_on:
+      db:
+        condition: service_healthy
+
+  chatbot:
+    image: ${DOCKERHUB_USERNAME}/cake-shop-chatbot:latest
+    container_name: cakeshop-chatbot
+    restart: unless-stopped
+    environment:
+      OLLAMA_BASE_URL: ${OLLAMA_BASE_URL}
+      PYTHONDONTWRITEBYTECODE: "1"
+      PYTHONUNBUFFERED: "1"
+    networks:
+      - internal
+
+  frontend:
+    image: ${DOCKERHUB_USERNAME}/cake-shop-frontend:latest
+    container_name: cakeshop-frontend
+    restart: unless-stopped
+    networks:
+      - internal
+
+  nginx:
+    image: nginx:alpine
+    container_name: cakeshop-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - internal
+    depends_on:
+      - backend
+      - chatbot
+      - frontend
+
+volumes:
+  db_data:
+
+networks:
+  internal:
+    driver: bridge
