@@ -1,4 +1,4 @@
-FROM ghcr.io/astral-sh/uv:python3.14-trixie-slim AS base
+FROM ghcr.io/astral-sh/uv:python3.13-bookworm-slim AS base
 WORKDIR /app
 COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen --no-cache
