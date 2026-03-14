@@ -17,16 +17,6 @@ services:
       timeout: 5s
       retries: 5
 
-  migrate:
-    image: kevinilhamramadhan/cake-shop-backend:latest
-    container_name: migrate-db
-    restart: no
-    networks:
-      - internal
-    depends_on:
-      db:
-        condition: service_healthy
-
   backend:
     image: kevinilhamramadhan/cake-shop-backend:latest
     container_name: cakeshop-backend
@@ -77,7 +67,6 @@ services:
       - internal
     depends_on:
       - backend
-      - chatbot
       - frontend
 
 volumes:
