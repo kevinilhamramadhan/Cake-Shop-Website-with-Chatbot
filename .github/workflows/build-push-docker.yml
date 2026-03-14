@@ -29,14 +29,14 @@ jobs:
     - name: Build the Docker image
       uses: docker/setup-buildx-action@v3  
 
-    - name: Build and Push Frontend (React)
+    - name: Build and Push Chatbot (Python)
       uses: docker/build-push-action@v6
       with:
-        context: ./frontend
+        context: ./chatbot
         push: true
         tags: |
-          ${{ env.DOCKER_IMAGE_FRONTEND }}:latest
-          ${{ env.DOCKER_IMAGE_FRONTEND }}:${{ github.sha }}
+          ${{ env.DOCKER_IMAGE_CHATBOT }}:latest
+          ${{ env.DOCKER_IMAGE_CHATBOT }}:${{ github.sha }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
 
@@ -51,13 +51,13 @@ jobs:
         cache-from: type=gha
         cache-to: type=gha,mode=max
 
-    - name: Build and Push Chatbot (Python)
+    - name: Build and Push Frontend (React)
       uses: docker/build-push-action@v6
       with:
-        context: ./chatbot
+        context: ./frontend
         push: true
         tags: |
-          ${{ env.DOCKER_IMAGE_CHATBOT }}:latest
-          ${{ env.DOCKER_IMAGE_CHATBOT }}:${{ github.sha }}
+          ${{ env.DOCKER_IMAGE_FRONTEND }}:latest
+          ${{ env.DOCKER_IMAGE_FRONTEND }}:${{ github.sha }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
