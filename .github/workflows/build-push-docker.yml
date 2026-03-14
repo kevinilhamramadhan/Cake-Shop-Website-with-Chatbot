@@ -8,9 +8,9 @@ on:
   workflow_dispatch:
 
 env:
-  DOCKER_IMAGE_BACKEND: ${{ secrets.DOCKERHUB_USERNAME }}/cake-Shop-backend
-  DOCKER_IMAGE_CHATBOT: ${{ secrets.DOCKERHUB_USERNAME }}/cake-Shop-chatbot
-  DOCKER_IMAGE_FRONTEND: ${{ secrets.DOCKERHUB_USERNAME }}/cake-Shop-frontend
+  DOCKER_IMAGE_BACKEND: ${{ secrets.DOCKERHUB_USERNAME }}/cake-shop-backend
+  DOCKER_IMAGE_CHATBOT: ${{ secrets.DOCKERHUB_USERNAME }}/cake-shop-chatbot
+  DOCKER_IMAGE_FRONTEND: ${{ secrets.DOCKERHUB_USERNAME }}/cake-shop-frontend
 
 jobs:
   build:
