@@ -3,13 +3,13 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci --only=production
 
-FROM base as image
+FROM base AS image
 WORKDIR /app
-RUN apk add -no-cache dumb-init
+RUN apk add --no-cache dumb-init
 RUN addgroup -g 1001 -S nodejs && \
-    adduser -u 1001 -S nodejs
+    adduser -u 1001 -S nodejs -G nodejs
 COPY --from=base /app/node_modules ./node_modules
-COPY --chown=nodejs:nodejs ..
+COPY --chown=nodejs:nodejs . .
 USER nodejs
 EXPOSE 3000
 
