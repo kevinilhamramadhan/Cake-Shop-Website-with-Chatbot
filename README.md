@@ -20,7 +20,7 @@ Backend → PostgreSQL
 Pastikan sudah terinstall di mesin lokal:
 - [Docker](https://docs.docker.com/get-docker/)
 - [Docker Compose](https://docs.docker.com/compose/install/) (v2+)
-- [Ollama](https://ollama.com/download) (wajib jika ingin menjalankan fitur chatbot)
+- [Ollama](https://ollama.com/download) (hanya jika ingin menjalankan fitur chatbot)
 
 ## Struktur Folder
 
@@ -51,31 +51,36 @@ cp .env.example .env
 
 Lalu isi nilai variabel di file `.env` sesuai environment lokal kamu (lihat bagian [Environment Variables](#environment-variables)).
 
-### 3. Install model Ollama (wajib untuk fitur chatbot)
+### 3. Jalankan
+
+**Tanpa chatbot** (tidak perlu Ollama):
+```bash
+docker compose up -d nginx
+```
+
+**Dengan chatbot** (membutuhkan Ollama):
 
 Pastikan Ollama sudah berjalan, lalu pull model yang dibutuhkan:
-
 ```bash
 ollama pull gemma3
 ollama pull functiongemma
 ```
 
-Setelah itu pastikan `OLLAMA_BASE_URL` di file `.env` sudah diisi:
+Pastikan `OLLAMA_BASE_URL` di file `.env` sudah diisi:
 ```
 OLLAMA_BASE_URL=http://host.docker.internal:11434
 ```
 
 > **Catatan:** Gunakan `host.docker.internal` agar container Docker bisa mengakses Ollama yang berjalan di host. Di Linux, jika `host.docker.internal` tidak berfungsi, gunakan IP host kamu (cek dengan `ip route | grep docker | awk '{print $9}'`).
 
-### 4. Jalankan
-
+Lalu jalankan semua service:
 ```bash
 docker compose up -d
 ```
 
 Docker akan otomatis pull image dari Docker Hub dan menjalankan semua service.
 
-### 5. Akses aplikasi
+### 4. Akses aplikasi
 
 | Service  | URL                        |
 |----------|----------------------------|
@@ -118,7 +123,7 @@ git commit -m "feat: deskripsi perubahan"
 git push origin main
 ```
 
-> **Catatan:** Setiap push ke `main` akan otomatis trigger CI/CD dan build ulang image ke Docker Hub.
+> **Catatan:** Setiap push ke `main` akan otomatis trigger CI dan build ulang image ke Docker Hub.
 
 ### Kontribusi per Role
 
