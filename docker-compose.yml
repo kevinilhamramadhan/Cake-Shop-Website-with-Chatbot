@@ -71,8 +71,24 @@ services:
       - backend
       - frontend
 
+  whatsapp:
+    image: avoylenko/wwebjs-api:latest
+    container_name: cakeshop-whatsapp
+    restart: unless-stopped
+    environment:
+      API_KEY: ${WHATSAPP_API_KEY}
+      BASE_WEBHOOK_URL: http://backend:3000/whatsapp/webhook
+      ENABLE_LOCAL_CALLBACK_EXAMPLE: "FALSE"
+    volumes:
+      - whatsapp_session:/usr/src/app/sessions
+    networks:
+      - internal
+    depends_on:
+      - backend
+
 volumes:
   db_data:
+  whatsapp_session:
 
 networks:
   internal:
